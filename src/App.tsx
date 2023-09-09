@@ -5,28 +5,75 @@ import BookCard from './components/BookCard';
 
 const App = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [selectedCategory, setSelectedCategory] = React.useState('all');
+  const [selectedSort, setSelectedSort] = React.useState('relevance');
+  const [startIndex, setStartIndex] = React.useState(0);
+  const [maxResults] = React.useState(30);
   const [items, setItems] = React.useState([]);
 
-  const onChangeInput = (event: any) => {
+  const onChangeSearch = (event: any) => {
     setSearchQuery(event.target.value);
-    console.log(searchQuery);
+  };
+  const onChangeCategory = (event: any) => {
+    setSelectedCategory(event.target.value);
+  };
+  const onChangeSort = (event: any) => {
+    setSelectedSort(event.target.value);
   };
 
-  const getBooks = async (searchQuery: any) => {
+  type getBooksProps = {
+    searchQuery: string;
+    selectedSort: string;
+    startIndex: number;
+    maxResults: number;
+  };
+
+  const getBooks = async ({ searchQuery, selectedSort, startIndex, maxResults }: getBooksProps) => {
     try {
       const { data } = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&maxResults=30&key=AIzaSyANpGowrTgu2N5mKGW0ZbrqOR8ptmabar8`,
+        `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&startIndex=${startIndex}&maxResults=${maxResults}&orderBy=${selectedSort}&printType=books&key=AIzaSyANpGowrTgu2N5mKGW0ZbrqOR8ptmabar8`,
       );
-      console.log(data);
-      setItems(data.items);
+      return data.items;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onSubmit = (event: any) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault();
-    getBooks(searchQuery);
+    const allBooks = await getBooks({
+      searchQuery,
+      selectedSort,
+      startIndex,
+      maxResults,
+    });
+
+    // const filteredBooks =
+    //   selectedCategory === 'all'
+    //     ? allBooks
+    //     : allBooks.filter((book: any) => {
+    //         const categories = book.volumeInfo.categories || [];
+    //         console.log(categories);
+    //         return categories.some(
+    //           (category: string) => category.toLowerCase() === selectedCategory.toLowerCase(),
+    //         );
+    //       });
+    // console.log(filteredBooks);
+    setItems(allBooks);
+  };
+
+  const loadMoreBooks = async () => {
+    const nextPage = startIndex + 1;
+    setStartIndex(nextPage);
+    const nextIndex = nextPage * maxResults;
+    const allBooks = await getBooks({
+      searchQuery,
+      selectedSort,
+      startIndex: nextIndex,
+      maxResults,
+    });
+    // @ts-ignore
+    setItems((prevItems) => [...prevItems, ...allBooks]);
   };
 
   return (
@@ -36,7 +83,7 @@ const App = () => {
         <form id="bookSearchForm">
           <div>
             <input
-              onChange={onChangeInput}
+              onChange={onChangeSearch}
               type="text"
               id="searchInput"
               name="searchQuery"
@@ -47,7 +94,11 @@ const App = () => {
           </div>
 
           <label htmlFor="categorySelect">Category:</label>
-          <select id="categorySelect" name="category">
+          <select
+            id="categorySelect"
+            name="category"
+            value={selectedCategory}
+            onChange={onChangeCategory}>
             <option value="all" selected>
               All
             </option>
@@ -60,7 +111,7 @@ const App = () => {
           </select>
 
           <label htmlFor="sortSelect">Sort By:</label>
-          <select id="sortSelect" name="sort">
+          <select id="sortSelect" name="sort" value={selectedSort} onChange={onChangeSort}>
             <option value="relevance" selected>
               relevance
             </option>
@@ -75,6 +126,7 @@ const App = () => {
             <BookCard {...obj} />
           ))}
         </div>
+        <button onClick={loadMoreBooks}>Load more</button>
       </main>
     </div>
   );
