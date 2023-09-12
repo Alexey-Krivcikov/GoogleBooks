@@ -19,7 +19,7 @@ export const fetchNewBooks = createAsyncThunk('books, fetchNewBooksStatus', asyn
 const initialState = {
   totalItems: 0,
   items: [],
-  status: 'loading', // loading. success. error
+  status: 'idle', // loading. success. error
 };
 
 const booksSlice = createSlice({

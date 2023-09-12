@@ -37,6 +37,7 @@ const Main = () => {
     <main className={styles.main}>
       {totalItems > 0 && <p>Total items: {totalItems}</p>}
       <div>
+        {status === 'loading' && <>Loading...</>}
         {status === 'success' &&
           items.map((obj: any) => (
             <Link to={`/books/${obj.id}`} key={obj.id}>
