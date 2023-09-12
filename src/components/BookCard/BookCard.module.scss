@@ -1,0 +1,19 @@
+.bookCard {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  gap: 5px;
+  text-align: center;
+  align-items: center;
+  color: #000;
+  &:hover {
+    cursor: pointer;
+  }
+  img {
+    width: 220px;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+}

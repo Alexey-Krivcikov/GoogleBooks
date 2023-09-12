@@ -2,13 +2,9 @@ import React from 'react';
 import BookCard from '../BookCard';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchBooks,
-  selectBooksData,
-  addItems,
-  fetchNewBooks,
-} from '../../redux/slices/booksSlice';
+import { selectBooksData, addItems, fetchNewBooks } from '../../redux/slices/booksSlice';
 import { selectSearchData, setStartIndex } from '../../redux/slices/searchSlice';
+import styles from './Main.module.scss';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -38,20 +34,17 @@ const Main = () => {
     dispatch(addItems(newItems));
   };
   return (
-    <main>
-      <p>Total items: {totalItems}</p>
+    <main className={styles.main}>
+      {totalItems > 0 && <p>Total items: {totalItems}</p>}
       <div>
-        {status === 'success' ? (
+        {status === 'success' &&
           items.map((obj: any) => (
             <Link to={`/books/${obj.id}`} key={obj.id}>
               <BookCard {...obj} />
             </Link>
-          ))
-        ) : (
-          <p>Список пуст</p>
-        )}
+          ))}
       </div>
-      <button onClick={loadMoreBooks}>Load more</button>
+      {totalItems !== items.length && <button onClick={loadMoreBooks}>Load more</button>}
     </main>
   );
 };

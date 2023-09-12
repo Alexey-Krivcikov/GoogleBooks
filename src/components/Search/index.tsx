@@ -4,6 +4,8 @@ import Sort from '../Sort';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSearchData, setSearchQuery } from '../../redux/slices/searchSlice';
 import { fetchBooks } from '../../redux/slices/booksSlice';
+import styles from './Search.module.scss';
+
 const Search = () => {
   const dispatch = useDispatch();
   const { searchQuery, sort, category, startIndex, maxResults } = useSelector(selectSearchData);
@@ -29,20 +31,20 @@ const Search = () => {
   };
 
   return (
-    <form id="bookSearchForm">
-      <div>
-        <input
-          onChange={onChangeSearch}
-          type="text"
-          id="searchInput"
-          name="searchQuery"
-          placeholder="Введите название книги..."
-          required
-        />
-        <Category />
-        <Sort />
-        <button type="submit" onClick={onSubmit} />
-      </div>
+    <form className={styles.form} id="bookSearchForm">
+      <input
+        onChange={onChangeSearch}
+        type="text"
+        id="searchInput"
+        name="searchQuery"
+        placeholder="Введите название книги..."
+        required
+      />
+      <Category />
+      <Sort />
+      <button type="submit" onClick={onSubmit}>
+        search
+      </button>
     </form>
   );
 };

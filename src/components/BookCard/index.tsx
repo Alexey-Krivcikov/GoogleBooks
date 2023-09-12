@@ -6,7 +6,7 @@ const BookCard = ({ volumeInfo }) => {
     volumeInfo.categories && volumeInfo.categories.length > 0 ? volumeInfo.categories[0] : '';
 
   return (
-    <div className={styles.container}>
+    <div className={styles.bookCard}>
       <h3>{volumeInfo.title}</h3>
       <img src={volumeInfo.imageLinks?.thumbnail} alt={volumeInfo.title} />
       {firstCategory && <p>Категория: {firstCategory}</p>}
