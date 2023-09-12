@@ -6,7 +6,13 @@ export const fetchBooks = createAsyncThunk('books, fetchBooksStatus', async (par
   const { data } = await axios.get(
     `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}+subject:${selectedCategory}&startIndex=${startIndex}&maxResults=${maxResults}&orderBy=${sort}&printType=books&key=AIzaSyANpGowrTgu2N5mKGW0ZbrqOR8ptmabar8`,
   );
-  console.log(data)
+  return data;
+})
+export const fetchNewBooks = createAsyncThunk('books, fetchNewBooksStatus', async (params) => {
+  const { searchQuery, selectedCategory, startIndex, maxResults, sort } = params;
+  const { data } = await axios.get(
+    `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}+subject:${selectedCategory}&startIndex=${startIndex}&maxResults=${maxResults}&orderBy=${sort}&printType=books&key=AIzaSyANpGowrTgu2N5mKGW0ZbrqOR8ptmabar8`,
+  );
   return data;
 })
 
@@ -20,8 +26,8 @@ const booksSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    setItems(state, action) {
-      state.items = action.payload.items;
+    addItems(state, action) {
+      state.items = [...state.items, ...action.payload];
     },
   },
   extraReducers: (builder) => {
@@ -38,12 +44,12 @@ const booksSlice = createSlice({
       .addCase(fetchBooks.rejected, (state) => {
         state.status = 'error';
         state.items = [];
-      });
+      })
   },
 });
 
 export const selectBooksData = (state) => state.books;
 
-export const { setItems } = booksSlice.actions;
+export const { addItems } = booksSlice.actions;
 
 export default booksSlice.reducer;

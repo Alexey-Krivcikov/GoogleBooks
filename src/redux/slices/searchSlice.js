@@ -20,12 +20,15 @@ const searchSlice = createSlice({
     },
     setSearchQuery(state, action) {
       state.searchQuery = action.payload
+    },
+    setStartIndex(state, action) {
+      state.startIndex = action.payload
     }
   }
 })
 
 export const selectSearchData = (state) => state.search;
 
-export const { setCategory, setSort, setSearchQuery } = searchSlice.actions;
+export const { setCategory, setSort, setSearchQuery, setStartIndex } = searchSlice.actions;
 
 export default searchSlice.reducer;

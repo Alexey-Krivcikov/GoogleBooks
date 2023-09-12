@@ -3,7 +3,7 @@ import Category from '../Category';
 import Sort from '../Sort';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSearchData, setSearchQuery } from '../../redux/slices/searchSlice';
-import { fetchBooks, setItems } from '../../redux/slices/booksSlice';
+import { fetchBooks } from '../../redux/slices/booksSlice';
 const Search = () => {
   const dispatch = useDispatch();
   const { searchQuery, sort, category, startIndex, maxResults } = useSelector(selectSearchData);
