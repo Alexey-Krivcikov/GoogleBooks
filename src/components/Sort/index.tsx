@@ -8,7 +8,7 @@ const Sort = () => {
     dispatch(setSort(event.target.value));
   };
   return (
-    <>
+    <div>
       <label htmlFor="sortSelect">Sort By:</label>
       <select id="sortSelect" name="sort" value={sort} onChange={onChangeSort}>
         <option value="relevance" selected>
@@ -16,7 +16,7 @@ const Sort = () => {
         </option>
         <option value="newest">newest</option>
       </select>
-    </>
+    </div>
   );
 };
 export default Sort;

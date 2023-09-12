@@ -1,7 +1,9 @@
 .form {
+  width: 300px;
   display: flex;
   flex-direction: column;
   gap: 5px;
+  align-items: center;
 
   button {
     box-sizing: border-box;

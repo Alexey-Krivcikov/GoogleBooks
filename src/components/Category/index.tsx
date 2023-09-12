@@ -10,7 +10,7 @@ const Category = () => {
     dispatch(setCategory(event.target.value));
   };
   return (
-    <>
+    <div>
       <label htmlFor="categorySelect">Category:</label>
       <select id="categorySelect" name="category" value={category} onChange={onChangeCategory}>
         <option value="all" selected>
@@ -23,7 +23,7 @@ const Category = () => {
         <option value="medical">Medical</option>
         <option value="poetry">Poetry</option>
       </select>
-    </>
+    </div>
   );
 };
 
